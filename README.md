@@ -1,5 +1,7 @@
 # AI Disclosure Badges
 
+![Code](https://raw.githubusercontent.com/mau-vera/built-with-ai-badges/main/badges/code/code-assisted--claude.svg) ![ReadMe](https://raw.githubusercontent.com/mau-vera/built-with-ai-badges/main/badges/docs/readme-ai-written--claude.svg)
+
 Open, copy-paste badges for transparently disclosing how AI tools were used in your work: emails, websites, documents, slide decks, and repos.
 
 ---
@@ -61,7 +63,7 @@ Logo: AI Generated  |  Midjourney
 Code: Human Coded
 ```
 
-The colon stands in for an implied "was": `README: AI Written` reads as *"the README was AI Written."* See [`spec/pill-copy-guide.md`](spec/pill-copy-guide.md) for the full grammar guide.
+The colon stands in for an implied "was": `README: AI Written` reads as *"the README was AI Written."* See [`pill-copy-guide.md`](pill-copy-guide.md) for the full grammar guide.
 
 ---
 
@@ -144,29 +146,29 @@ Use scope labels when combining badges so it's clear what each one applies to.
 </div>
 ```
 
-**Left pill color reference:**
-
-| Type | `background` value |
-|---|---|
-| AI Generated / heavy use | `#7B5EA7` |
-| AI Assisted / partial use | `#2E71A8` |
-| AI Utility (translate, transcribe) | `#7A8694` |
-| Human Made / no AI | `#3A7D5E` |
-
 ---
 
 ### GitHub README
 
 GitHub's markdown renderer sanitizes inline `style` attributes from HTML elements in `.md` files as a security measure. The pill HTML is valid, but without CSS the pills render as unstyled plain text. This is a GitHub limitation, not a problem with the badges themselves.
 
-**Once SVG badge files are published to this repo** (see [Coming soon](#coming-soon)), you can embed them as images in any markdown file:
+SVG files are available in the `/badges/` folder of this repo. Embed them as images using the raw GitHub URL:
 
 ```markdown
-![Writing: AI Assisted](https://your-host.com/badges/svg/ai-assisted--claude.svg)
-![Code: Human Coded](https://your-host.com/badges/svg/human-coded.svg)
+![AI Assisted · Claude](https://raw.githubusercontent.com/mau-vera/built-with-ai-badges/main/badges/neutral/ai-assisted--claude.svg)
 ```
 
-In the meantime, the full inline HTML works on **GitHub Pages** and any `.html` file in your repo. Use the web page snippet above.
+```markdown
+![README: AI Written · Claude](https://raw.githubusercontent.com/mau-vera/built-with-ai-badges/main/badges/docs/readme-ai-written--claude.svg)
+```
+
+```markdown
+![Human Written](https://raw.githubusercontent.com/mau-vera/built-with-ai-badges/main/badges/human/human-written.svg)
+```
+
+**Finding the right file:** Browse the [`/badges/`](https://github.com/mau-vera/built-with-ai-badges/tree/main/badges) folder. Files are organized by context (`writing/`, `code/`, `docs/`, `comms/`, `research/`, `images/`, `prd/`) with a `neutral/` folder for generic scope-less badges. File names follow the pattern `{scope-label}--{tool}.svg`.
+
+The full inline HTML works on **GitHub Pages** and any `.html` file in your repo. Use the web page snippet above.
 
 ---
 
@@ -174,11 +176,15 @@ In the meantime, the full inline HTML works on **GitHub Pages** and any `.html` 
 
 Google Docs is a word processor, not an HTML renderer. There is no way to paste or embed HTML or CSS into a document. The only way to add a visual badge is to insert a badge as an image file via **Insert > Image**.
 
-**Once PNG badge files are published to this repo** (see [Coming soon](#coming-soon)), you can:
+PNG files are available in the [`/badges/`](https://github.com/mau-vera/built-with-ai-badges/tree/main/badges) folder. To add one to a Google Doc:
 
-1. Download the badge PNG for your disclosure
-2. In your document, go to **Insert > Image > Upload from computer**
-3. Place the image inline at the end of the document or in the footer via **Insert > Headers & footers > Footer**
+1. Browse the `/badges/` folder and open the file that matches your disclosure
+2. Click **Download raw file** (the download icon on GitHub) to save the PNG
+3. In your Google Doc, place your cursor where the badge should appear
+4. Go to **Insert > Image > Upload from computer** and select the downloaded PNG
+5. To place it in the document footer instead, go to **Insert > Headers & footers > Footer** first, then insert the image
+
+Resize the badge by clicking it and dragging a corner handle. A height of around 18px works well inline; 22–24px for a standalone footer line.
 
 ---
 
@@ -186,26 +192,25 @@ Google Docs is a word processor, not an HTML renderer. There is no way to paste 
 
 Email clients implement their own CSS rendering. Gmail strips `display:flex` and most modern layout properties from signature HTML. A flexbox pill will render as broken unstyled text in most inboxes.
 
-**Once PNG badge files are published to this repo** (see [Coming soon](#coming-soon)), you can embed a badge as an inline image in your Gmail signature:
+PNG files are available in the [`/badges/`](https://github.com/mau-vera/built-with-ai-badges/tree/main/badges) folder. To add one to your Gmail signature:
 
-1. Gmail → Settings (gear icon) → **See all settings**
-2. **General** tab → scroll to **Signature**
-3. In the signature editor, click the **Insert image** icon
-4. Upload your badge PNG or paste its hosted URL
+1. Browse the `/badges/` folder and open the file that matches your disclosure (the `comms/` folder has email-specific badges like `email-ai-assisted--claude.png`)
+2. Click **Download raw file** to save the PNG
+3. In Gmail, go to **Settings (gear icon) > See all settings > General > Signature**
+4. In the signature editor, click the **Insert image** icon (the photo icon in the toolbar)
+5. Choose **Upload** and select the downloaded PNG
+6. Once inserted, click the image and use the resize options (Small / Medium / Large) to set the size
 
-Until then, the signature editor's rich text mode lets you add a styled text disclosure: set a separator line, type your disclosure, and use the formatting toolbar to set a small font size and gray color to keep it unobtrusive.
+For a signature badge that stays in place consistently across devices, the **Small** size setting in Gmail's editor works best.
 
 ---
 
-## Coming soon
+## Roadmap
 
-SVG and PNG badge files will be published to this repo to unlock embedding in GitHub markdown, Google Docs, and email. Track progress here:
-
-- [ ] Publish `/badges/svg/` with pre-built SVG files for all common labels and tools
-- [ ] Publish `/badges/png/` with raster versions at 2x resolution
-- [ ] Host on GitHub Pages for stable `<img>` URL embedding
-- [ ] Build a badge generator page for custom labels and tool combinations
-- [ ] Update README with hosted URLs once published
+- [x] Publish SVG badge files to `/badges/` organized by context
+- [x] Publish PNG badge files to `/badges/` at 2x resolution
+- [ ] Host on GitHub Pages for cleaner, stable CDN URLs (no dependency on `raw.githubusercontent.com`)
+- [ ] Build a badge generator page: pick a label, pick a tool, get copy-paste HTML or an image URL
 
 ---
 
@@ -243,7 +248,7 @@ You only need the HTML template and the right color. All other choices are yours
 | Perplexity | `https://cdn.jsdelivr.net/npm/remixicon@4.9.1/icons/Logos/perplexity-fill.svg` |
 | Generic AI | `https://cdn.jsdelivr.net/npm/remixicon@4.9.1/icons/Editor/ai.svg` |
 
-For the full grammar and copy rules, see [`spec/pill-copy-guide.md`](spec/pill-copy-guide.md).
+For the full grammar and copy rules, see [`pill-copy-guide.md`](pill-copy-guide.md).
 
 ---
 
@@ -254,5 +259,3 @@ For the full grammar and copy rules, see [`spec/pill-copy-guide.md`](spec/pill-c
 ---
 
 *Inspired by Mike Elgan's [Always disclose how you use AI](https://www.computerworld.com/article/4120839/always-disclose-how-you-use-ai.html) (Computerworld, Jan 2026).*
-
-*AI disclosures: README: AI Assisted · Claude*
