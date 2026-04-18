@@ -1,6 +1,6 @@
 # AI Disclosure Badges
 
-![Code](https://raw.githubusercontent.com/mau-vera/built-with-ai-badges/main/badges/code/code-assisted--claude.svg) ![ReadMe](https://raw.githubusercontent.com/mau-vera/built-with-ai-badges/main/badges/docs/readme-ai-written--claude.svg)
+![Code](https://raw.githubusercontent.com/mau-vera/built-with-ai-badges/main/badges/code/code-assisted--claude.svg) ![ReadMe](https://raw.githubusercontent.com/mau-vera/built-with-ai-badges/main/badges/docs/readme-ai-assisted--claude.svg)
 
 Open, copy-paste badges for transparently disclosing how AI tools were used in your work: emails, websites, documents, slide decks, and repos.
 
