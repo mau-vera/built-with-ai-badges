@@ -90,7 +90,7 @@ There is no fixed set of labels. Use any past participle that accurately describ
 
 **If no AI was used:** `Human Written`, `Human Coded`, `Human Made`, `Human Photographed` (green)
 
-Make up whatever label fits. The goal is accuracy, not compliance with a list. Browse [`badge-gallery.html`](badge-gallery.html) for visual examples of common badges.
+Make up whatever label fits. The goal is accuracy, not compliance with a list. Browse [`badge-gallery.html`](https://mau-vera.github.io/built-with-ai-badges/badge-gallery.html) for visual examples of common badges.
 
 ---
 
