@@ -1,6 +1,6 @@
 # AI Disclosure Badges
 
-![Code](https://raw.githubusercontent.com/mau-vera/built-with-ai-badges/main/badges/code/code-assisted--claude.svg) ![ReadMe](https://raw.githubusercontent.com/mau-vera/built-with-ai-badges/main/badges/docs/readme-ai-assisted--claude.svg) ![Site](https://raw.githubusercontent.com/mau-vera/built-with-ai-badges/main/badges/code/ai-coded--claude.svg) 
+![ReadMe](https://raw.githubusercontent.com/mau-vera/built-with-ai-badges/main/badges/docs/readme-ai-assisted--claude.svg) ![Site](https://raw.githubusercontent.com/mau-vera/built-with-ai-badges/main/badges/code/ai-coded--claude.svg) 
 
 Open, copy-paste badges for transparently disclosing how AI tools were used in your work: emails, websites, documents, slide decks, and repos.
 
@@ -90,11 +90,15 @@ There is no fixed set of labels. Use any past participle that accurately describ
 
 **If no AI was used:** `Human Written`, `Human Coded`, `Human Made`, `Human Photographed` (green)
 
-Make up whatever label fits. The goal is accuracy, not compliance with a list. Browse [`badge-gallery.html`](https://disclosingai.com/badge-gallery.html) for visual examples of common badges.
+Make up whatever label fits. The goal is accuracy, not compliance with a list. The easiest way to build one is the **[badge generator](https://disclosingai.com)** — pick a label, pick a tool, and copy the HTML or markdown in one step.
 
 ---
 
 ## Platform examples
+
+For any platform, the quickest starting point is the **[badge generator](https://disclosingai.com)** — it outputs ready-to-use HTML or a markdown image URL for whatever label and tool you choose.
+
+The snippets below show what the output looks like for each platform.
 
 ### Web page
 
@@ -216,7 +220,9 @@ For a signature badge that stays in place consistently across devices, the **Sma
 
 ## Build your own badge
 
-You only need the HTML template and the right color. All other choices are yours.
+The fastest path is the **[badge generator at disclosingai.com](https://disclosingai.com)**: type a label, choose a tool and color, preview it on light or dark backgrounds, and copy the ready-to-paste HTML or markdown. No code required.
+
+If you'd rather build from scratch, you only need the HTML template and the right color.
 
 **HTML template:**
 
