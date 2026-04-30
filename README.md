@@ -209,8 +209,8 @@ For a signature badge that stays in place consistently across devices, the **Sma
 
 - [x] Publish SVG badge files to `/badges/` organized by context
 - [x] Publish PNG badge files to `/badges/` at 2x resolution
-- [ ] Host on GitHub Pages for cleaner, stable CDN URLs (no dependency on `raw.githubusercontent.com`)
-- [ ] Build a badge generator page: pick a label, pick a tool, get copy-paste HTML or an image URL
+- [x] Host on GitHub Pages for cleaner, stable CDN URLs (no dependency on `raw.githubusercontent.com`)
+- [x] Build a badge generator page: pick a label, pick a tool, get copy-paste HTML or an image URL
 
 ---
 

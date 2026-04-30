@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Disclosure Badges — Build &amp; Embed</title>
+  <meta name="description" content="Free, open badges for transparently disclosing how AI tools were used in your work. Pick a badge, build your own, and copy the embed code.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Minimal CSS: keyframes, mask-image, select chevron, .preview-area base,
+       and JS-toggled active/state classes that can't be handled with Tailwind alone */
+
+    @keyframes marquee-scroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .hero-marquee {
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    }
+    .hero-marquee-track { animation: marquee-scroll 28s linear infinite; }
+
+    #tool-select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.8rem center;
+    }
+
+    /* preview-area: JS replaces entire className so keep base here */
+    .preview-area {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      border: 1px solid #eee;
+      transition: background 0.2s;
+      margin-bottom: 1.25rem;
+    }
+    .preview-area svg { max-width: 100%; }
+    .preview-area.dark-bg { background: #212529; border-color: #333; }
+
+    /* JS-toggled active states */
+    .chip.active,
+    .bg-btn.active,
+    .snippet-tab.active { background: #212529; color: white; border-color: #212529; }
+    .swatch.active { border-color: #212529; transform: scale(1.08); box-shadow: 0 0 0 1px #212529; }
+    .copy-btn.copied { background: #3A7D5E; color: white; border-color: #3A7D5E; }
+  </style>
+</head>
+<body class="bg-[#e4e4e4] text-[#333] font-sans leading-normal">
+
+<!-- ─────────────────────────── HERO ─────────────────────────── -->
+<div class="bg-[#0d1117] text-white px-4 pt-14 pb-12">
+  <div class="max-w-[960px] mx-auto">
+    <div class="text-[0.65rem] font-bold uppercase tracking-[0.15em] text-[#777] mb-3">Open · Free · CC0</div>
+    <h1 class="text-[2rem] font-bold tracking-tight leading-tight mb-2.5">AI Disclosure Badges</h1>
+    <p class="text-[0.92rem] text-[#aaa] mb-10 leading-relaxed">Copy-paste badges for transparently disclosing how AI tools were used in your work: emails, websites, documents, slide decks, and repos.</p>
+
+    <div class="hero-marquee overflow-hidden w-full">
+      <div class="hero-marquee-track flex gap-3 w-max items-center">
+        <!-- set 1 -->
+        <img src="./badges/writing/ai-written--claude.svg"             alt="AI Written · Claude"         class="h-7 flex-shrink-0">
+        <img src="./badges/writing/ai-assisted--chatgpt.svg"           alt="AI Assisted · ChatGPT"       class="h-7 flex-shrink-0">
+        <img src="./badges/code/ai-coded--github-copilot.svg"          alt="AI Coded · GitHub Copilot"   class="h-7 flex-shrink-0">
+        <img src="./badges/images/ai-generated--midjourney.svg"        alt="AI Generated · Midjourney"   class="h-7 flex-shrink-0">
+        <img src="./badges/research/ai-researched--perplexity.svg"     alt="AI Researched · Perplexity"  class="h-7 flex-shrink-0">
+        <img src="./badges/human/human-written.svg"                    alt="Human Written"               class="h-7 flex-shrink-0">
+        <img src="./badges/writing/ai-edited--gemini.svg"              alt="AI Edited · Gemini"          class="h-7 flex-shrink-0">
+        <img src="./badges/code/code-assisted--claude.svg"             alt="AI Code Assist · Claude"     class="h-7 flex-shrink-0">
+        <img src="./badges/human/human-coded.svg"                      alt="Human Coded"                 class="h-7 flex-shrink-0">
+        <img src="./badges/images/ai-enhanced--gemini.svg"             alt="AI Enhanced · Gemini"        class="h-7 flex-shrink-0">
+        <img src="./badges/writing/ai-translated--deepl.svg"           alt="AI Translated · DeepL"       class="h-7 flex-shrink-0">
+        <img src="./badges/human/human-made.svg"                       alt="Human Made"                  class="h-7 flex-shrink-0">
+        <!-- set 2 (exact duplicate for seamless loop) -->
+        <img src="./badges/writing/ai-written--claude.svg"             alt="AI Written · Claude"         class="h-7 flex-shrink-0">
+        <img src="./badges/writing/ai-assisted--chatgpt.svg"           alt="AI Assisted · ChatGPT"       class="h-7 flex-shrink-0">
+        <img src="./badges/code/ai-coded--github-copilot.svg"          alt="AI Coded · GitHub Copilot"   class="h-7 flex-shrink-0">
+        <img src="./badges/images/ai-generated--midjourney.svg"        alt="AI Generated · Midjourney"   class="h-7 flex-shrink-0">
+        <img src="./badges/research/ai-researched--perplexity.svg"     alt="AI Researched · Perplexity"  class="h-7 flex-shrink-0">
+        <img src="./badges/human/human-written.svg"                    alt="Human Written"               class="h-7 flex-shrink-0">
+        <img src="./badges/writing/ai-edited--gemini.svg"              alt="AI Edited · Gemini"          class="h-7 flex-shrink-0">
+        <img src="./badges/code/code-assisted--claude.svg"             alt="AI Code Assist · Claude"     class="h-7 flex-shrink-0">
+        <img src="./badges/human/human-coded.svg"                      alt="Human Coded"                 class="h-7 flex-shrink-0">
+        <img src="./badges/images/ai-enhanced--gemini.svg"             alt="AI Enhanced · Gemini"        class="h-7 flex-shrink-0">
+        <img src="./badges/writing/ai-translated--deepl.svg"           alt="AI Translated · DeepL"       class="h-7 flex-shrink-0">
+        <img src="./badges/human/human-made.svg"                       alt="Human Made"                  class="h-7 flex-shrink-0">
+      </div>
+    </div>
+
+    <div class="mt-8">
+      <a href="#builder" class="inline-block bg-white text-[#212529] text-[0.8rem] font-bold no-underline px-5 py-2.5 rounded-md transition-opacity hover:opacity-[.85]">Build your badge &darr;</a>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────────────── MAIN ─────────────────────────── -->
+<div class="max-w-[960px] mx-auto px-4">
+
+  <!-- ── Color legend ── -->
+  <section class="pt-12">
+    <div class="text-[0.65rem] font-bold uppercase tracking-[0.14em] text-[#999] mb-6 pb-2 border-b border-[#ccc]">Color guide</div>
+    <div class="flex flex-wrap gap-5 bg-white rounded-xl px-5 py-4 shadow-sm mb-6">
+      <div class="flex items-center gap-2 text-[0.76rem] text-[#666]">
+        <div class="w-[11px] h-[11px] rounded-full flex-shrink-0" style="background:#7B5EA7"></div>
+        <strong>Purple</strong> — heavy AI use (AI wrote, generated, or coded it)
+      </div>
+      <div class="flex items-center gap-2 text-[0.76rem] text-[#666]">
+        <div class="w-[11px] h-[11px] rounded-full flex-shrink-0" style="background:#2E71A8"></div>
+        <strong>Blue</strong> — AI-assisted (human did the work, AI helped)
+      </div>
+      <div class="flex items-center gap-2 text-[0.76rem] text-[#666]">
+        <div class="w-[11px] h-[11px] rounded-full flex-shrink-0" style="background:#7A8694"></div>
+        <strong>Gray</strong> — utility AI (fact-checked, researched, transcribed)
+      </div>
+      <div class="flex items-center gap-2 text-[0.76rem] text-[#666]">
+        <div class="w-[11px] h-[11px] rounded-full flex-shrink-0" style="background:#3A7D5E"></div>
+        <strong>Green</strong> — human-made (no AI involved)
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Badge Builder ── -->
+  <section class="py-12" id="builder">
+    <div class="text-[0.65rem] font-bold uppercase tracking-[0.14em] text-[#999] mb-6 pb-2 border-b border-[#ccc]">Build your badge</div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+
+      <!-- Left: form -->
+      <div class="bg-white rounded-xl p-6 shadow-sm">
+        <div class="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-[#bbb] mb-5">Configure</div>
+
+        <div class="mb-5">
+          <label for="label-input" class="block text-[0.78rem] font-semibold text-[#444] mb-1.5">What did AI do?</label>
+          <input type="text" id="label-input" placeholder="e.g. AI Written" value="AI Assisted" autocomplete="off" spellcheck="false"
+            class="w-full px-3 py-2 border-[1.5px] border-[#e0e0e0] rounded-lg text-sm font-sans text-[#222] bg-[#fafafa] transition-colors outline-none appearance-none focus:border-[#212529] focus:bg-white">
+          <div class="flex flex-wrap gap-1.5 mt-2" id="label-chips">
+            <span class="chip text-[0.7rem] font-medium px-2.5 py-[0.25em] rounded-full border border-[#e0e0e0] bg-[#f5f5f5] text-[#666] cursor-pointer transition-all hover:bg-[#212529] hover:text-white hover:border-[#212529] select-none leading-[1.7]" data-label="AI Written"    data-color="#7B5EA7">AI Written</span>
+            <span class="chip text-[0.7rem] font-medium px-2.5 py-[0.25em] rounded-full border border-[#e0e0e0] bg-[#f5f5f5] text-[#666] cursor-pointer transition-all hover:bg-[#212529] hover:text-white hover:border-[#212529] select-none leading-[1.7]" data-label="AI Assisted"   data-color="#2E71A8">AI Assisted</span>
+            <span class="chip text-[0.7rem] font-medium px-2.5 py-[0.25em] rounded-full border border-[#e0e0e0] bg-[#f5f5f5] text-[#666] cursor-pointer transition-all hover:bg-[#212529] hover:text-white hover:border-[#212529] select-none leading-[1.7]" data-label="AI Edited"     data-color="#2E71A8">AI Edited</span>
+            <span class="chip text-[0.7rem] font-medium px-2.5 py-[0.25em] rounded-full border border-[#e0e0e0] bg-[#f5f5f5] text-[#666] cursor-pointer transition-all hover:bg-[#212529] hover:text-white hover:border-[#212529] select-none leading-[1.7]" data-label="AI Coded"      data-color="#7B5EA7">AI Coded</span>
+            <span class="chip text-[0.7rem] font-medium px-2.5 py-[0.25em] rounded-full border border-[#e0e0e0] bg-[#f5f5f5] text-[#666] cursor-pointer transition-all hover:bg-[#212529] hover:text-white hover:border-[#212529] select-none leading-[1.7]" data-label="AI Generated"  data-color="#7B5EA7">AI Generated</span>
+            <span class="chip text-[0.7rem] font-medium px-2.5 py-[0.25em] rounded-full border border-[#e0e0e0] bg-[#f5f5f5] text-[#666] cursor-pointer transition-all hover:bg-[#212529] hover:text-white hover:border-[#212529] select-none leading-[1.7]" data-label="AI Translated" data-color="#2E71A8">AI Translated</span>
+            <span class="chip text-[0.7rem] font-medium px-2.5 py-[0.25em] rounded-full border border-[#e0e0e0] bg-[#f5f5f5] text-[#666] cursor-pointer transition-all hover:bg-[#212529] hover:text-white hover:border-[#212529] select-none leading-[1.7]" data-label="AI Researched" data-color="#7A8694">AI Researched</span>
+            <span class="chip text-[0.7rem] font-medium px-2.5 py-[0.25em] rounded-full border border-[#e0e0e0] bg-[#f5f5f5] text-[#666] cursor-pointer transition-all hover:bg-[#212529] hover:text-white hover:border-[#212529] select-none leading-[1.7]" data-label="AI Summarized" data-color="#2E71A8">AI Summarized</span>
+            <span class="chip text-[0.7rem] font-medium px-2.5 py-[0.25em] rounded-full border border-[#e0e0e0] bg-[#f5f5f5] text-[#666] cursor-pointer transition-all hover:bg-[#212529] hover:text-white hover:border-[#212529] select-none leading-[1.7]" data-label="Human Written" data-color="#3A7D5E">Human Written</span>
+            <span class="chip text-[0.7rem] font-medium px-2.5 py-[0.25em] rounded-full border border-[#e0e0e0] bg-[#f5f5f5] text-[#666] cursor-pointer transition-all hover:bg-[#212529] hover:text-white hover:border-[#212529] select-none leading-[1.7]" data-label="Human Coded"   data-color="#3A7D5E">Human Coded</span>
+            <span class="chip text-[0.7rem] font-medium px-2.5 py-[0.25em] rounded-full border border-[#e0e0e0] bg-[#f5f5f5] text-[#666] cursor-pointer transition-all hover:bg-[#212529] hover:text-white hover:border-[#212529] select-none leading-[1.7]" data-label="Human Made"    data-color="#3A7D5E">Human Made</span>
+          </div>
+        </div>
+
+        <div class="mb-5" id="tool-field">
+          <label for="tool-select" class="block text-[0.78rem] font-semibold text-[#444] mb-1.5">AI tool used <span class="font-normal text-[#aaa]">(optional)</span></label>
+          <select id="tool-select" class="w-full px-3 py-2 pr-9 border-[1.5px] border-[#e0e0e0] rounded-lg text-sm font-sans text-[#222] bg-[#fafafa] transition-colors outline-none appearance-none focus:border-[#212529] focus:bg-white cursor-pointer">
+            <option value="">No specific tool — just say "AI"</option>
+            <option value="Claude" selected>Claude</option>
+            <option value="ChatGPT">ChatGPT</option>
+            <option value="Gemini">Gemini</option>
+            <option value="GitHub Copilot">GitHub Copilot</option>
+            <option value="Apple Intelligence">Apple Intelligence</option>
+            <option value="Microsoft Copilot">Microsoft Copilot</option>
+            <option value="Midjourney">Midjourney</option>
+            <option value="Perplexity">Perplexity</option>
+            <option value="DeepSeek">DeepSeek</option>
+            <option value="Qwen">Qwen</option>
+            <option value="Grammarly">Grammarly</option>
+            <option value="DALL·E">DALL·E</option>
+            <option value="Stable Diffusion">Stable Diffusion</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-[0.78rem] font-semibold text-[#444] mb-1.5">Color</label>
+          <div class="flex flex-wrap gap-[0.45rem] mt-1.5" id="color-swatches">
+            <button class="swatch w-7 h-7 rounded-full cursor-pointer border-[2.5px] border-transparent transition-transform hover:scale-110 outline-none" style="background:#7B5EA7" data-color="#7B5EA7" title="Purple — heavy AI use" aria-label="Purple"></button>
+            <button class="swatch w-7 h-7 rounded-full cursor-pointer border-[2.5px] border-transparent transition-transform hover:scale-110 outline-none" style="background:#2E71A8" data-color="#2E71A8" title="Blue — AI-assisted"    aria-label="Blue"></button>
+            <button class="swatch w-7 h-7 rounded-full cursor-pointer border-[2.5px] border-transparent transition-transform hover:scale-110 outline-none" style="background:#7A8694" data-color="#7A8694" title="Gray — utility AI"     aria-label="Gray"></button>
+            <button class="swatch w-7 h-7 rounded-full cursor-pointer border-[2.5px] border-transparent transition-transform hover:scale-110 outline-none" style="background:#3A7D5E" data-color="#3A7D5E" title="Green — human-made"    aria-label="Green"></button>
+            <button class="swatch w-7 h-7 rounded-full cursor-pointer border-[2.5px] border-transparent transition-transform hover:scale-110 outline-none" style="background:#C0392B" data-color="#C0392B" title="Red"                   aria-label="Red"></button>
+            <button class="swatch w-7 h-7 rounded-full cursor-pointer border-[2.5px] border-transparent transition-transform hover:scale-110 outline-none" style="background:#D4880A" data-color="#D4880A" title="Amber"                 aria-label="Amber"></button>
+          </div>
+          <div class="flex items-center gap-2 mt-2.5">
+            <label for="custom-color" class="text-[0.72rem] text-[#999] font-medium">Custom:</label>
+            <input type="color" id="custom-color" value="#2E71A8" style="width:34px;height:28px;padding:1px 2px;background:none;" class="border-[1.5px] border-[#e0e0e0] rounded cursor-pointer">
+            <span class="text-[0.72rem] font-mono text-[#888] ml-0.5" id="color-hex">#2E71A8</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: preview + export -->
+      <div class="bg-white rounded-xl p-6 shadow-sm">
+        <div class="text-[0.65rem] font-bold uppercase tracking-[0.12em] text-[#bbb] mb-5">Preview &amp; export</div>
+
+        <div class="flex gap-1.5 mb-3">
+          <button class="bg-btn text-[0.65rem] font-bold uppercase tracking-[0.08em] px-2.5 py-[0.25em] rounded-full border border-[#e0e0e0] bg-[#f5f5f5] text-[#888] cursor-pointer transition-all active" data-bg="light">Light</button>
+          <button class="bg-btn text-[0.65rem] font-bold uppercase tracking-[0.08em] px-2.5 py-[0.25em] rounded-full border border-[#e0e0e0] bg-[#f5f5f5] text-[#888] cursor-pointer transition-all"        data-bg="dark">Dark</button>
+          <button class="bg-btn text-[0.65rem] font-bold uppercase tracking-[0.08em] px-2.5 py-[0.25em] rounded-full border border-[#e0e0e0] bg-[#f5f5f5] text-[#888] cursor-pointer transition-all"        data-bg="gray">Gray</button>
+        </div>
+
+        <div class="preview-area" id="preview-area">
+          <!-- SVG renders here -->
+        </div>
+
+        <div class="flex gap-1.5 mb-2.5">
+          <button class="snippet-tab text-[0.65rem] font-bold uppercase tracking-[0.08em] px-2.5 py-[0.25em] rounded-full border border-[#e0e0e0] bg-[#f5f5f5] text-[#888] cursor-pointer transition-all active" data-tab="html">HTML embed</button>
+          <button class="snippet-tab text-[0.65rem] font-bold uppercase tracking-[0.08em] px-2.5 py-[0.25em] rounded-full border border-[#e0e0e0] bg-[#f5f5f5] text-[#888] cursor-pointer transition-all"        data-tab="markdown">Markdown</button>
+          <button class="snippet-tab text-[0.65rem] font-bold uppercase tracking-[0.08em] px-2.5 py-[0.25em] rounded-full border border-[#e0e0e0] bg-[#f5f5f5] text-[#888] cursor-pointer transition-all"        data-tab="svg">SVG code</button>
+          <button class="snippet-tab text-[0.65rem] font-bold uppercase tracking-[0.08em] px-2.5 py-[0.25em] rounded-full border border-[#e0e0e0] bg-[#f5f5f5] text-[#888] cursor-pointer transition-all"        data-tab="text">Plain text</button>
+        </div>
+
+        <div class="relative mb-4">
+          <pre id="snippet-code" class="bg-[#f7f7f7] border border-[#e8e8e8] rounded-lg p-3 pr-14 text-[0.73rem] font-mono whitespace-pre-wrap break-all text-[#333] max-h-[110px] overflow-y-auto leading-relaxed"></pre>
+          <button class="copy-btn absolute top-1.5 right-1.5 text-[0.65rem] font-bold uppercase tracking-[0.06em] px-2.5 py-1 rounded border border-[#e0e0e0] bg-white text-[#666] cursor-pointer transition-all hover:bg-[#212529] hover:text-white hover:border-[#212529]" id="copy-btn">Copy</button>
+        </div>
+
+        <p id="markdown-note" style="display:none" class="text-[0.72rem] text-[#999] leading-[1.5] mb-4">
+          ⚠️ <strong class="text-[#888]">GitHub strips <code class="text-[0.68rem] bg-[#f5f5f5] border border-[#e8e8e8] rounded px-1 font-mono text-[#333]">data:</code> URIs</strong> in READMEs — the badge will show as a broken image. For GitHub, download the SVG and reference it via a raw URL:<br>
+          <code class="text-[0.65rem] break-all bg-[#f5f5f5] border border-[#e8e8e8] rounded px-1 py-[0.2em] font-mono text-[#333] inline-block mt-1">https://raw.githubusercontent.com/mau-vera/built-with-ai-badges/main/badges/writing/ai-assisted--claude.svg</code>
+        </p>
+
+        <div class="flex gap-2.5">
+          <button class="dl-btn flex-1 py-2.5 px-2 rounded-lg border-[1.5px] border-[#e0e0e0] bg-[#fafafa] text-[0.78rem] font-semibold text-[#444] cursor-pointer text-center transition-all hover:bg-[#212529] hover:text-white hover:border-[#212529] font-sans" id="dl-svg">↓ Download SVG</button>
+          <button class="dl-btn flex-1 py-2.5 px-2 rounded-lg border-[1.5px] border-[#e0e0e0] bg-[#fafafa] text-[0.78rem] font-semibold text-[#444] cursor-pointer text-center transition-all hover:bg-[#212529] hover:text-white hover:border-[#212529] font-sans" id="dl-png">↓ Download PNG (2×)</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── How to embed ── -->
+  <section class="py-12">
+    <div class="text-[0.65rem] font-bold uppercase tracking-[0.14em] text-[#999] mb-6 pb-2 border-b border-[#ccc]">How to use these badges</div>
+    <div class="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-4">
+
+      <div class="bg-white rounded-xl p-5 shadow-sm">
+        <div class="text-[0.62rem] font-bold uppercase tracking-[0.1em] text-[#d0d0d0] mb-1.5">Option 1 — Easiest</div>
+        <h4 class="text-[0.875rem] font-semibold text-[#111] mb-1.5">Copy the HTML snippet</h4>
+        <p class="text-[0.78rem] text-[#777] leading-[1.55]">Select a badge above, then copy the <strong>HTML embed</strong> code and paste it anywhere in an email, webpage, or document that supports HTML.</p>
+      </div>
+
+      <div class="bg-white rounded-xl p-5 shadow-sm">
+        <div class="text-[0.62rem] font-bold uppercase tracking-[0.1em] text-[#d0d0d0] mb-1.5">Option 2</div>
+        <h4 class="text-[0.875rem] font-semibold text-[#111] mb-1.5">Download &amp; host yourself</h4>
+        <p class="text-[0.78rem] text-[#777] leading-[1.55]">Download the SVG or PNG and upload it to your own server, CDN, or drag it directly into Notion, Google Docs, or Figma.</p>
+      </div>
+
+      <div class="bg-white rounded-xl p-5 shadow-sm">
+        <div class="text-[0.62rem] font-bold uppercase tracking-[0.1em] text-[#d0d0d0] mb-1.5">Option 3 — GitHub README</div>
+        <h4 class="text-[0.875rem] font-semibold text-[#111] mb-1.5">Use a raw GitHub URL</h4>
+        <p class="text-[0.78rem] text-[#777] leading-[1.55]">Reference an existing badge file directly from this repo using the Markdown snippet, or copy a raw URL like:<br><br>
+        <code class="text-[0.68rem] bg-[#f5f5f5] border border-[#e8e8e8] rounded px-1 py-[0.15em] font-mono text-[#333] break-all">https://raw.githubusercontent.com/mau-vera/built-with-ai-badges/main/badges/writing/ai-assisted--claude.svg</code></p>
+      </div>
+
+      <div class="bg-white rounded-xl p-5 shadow-sm">
+        <div class="text-[0.62rem] font-bold uppercase tracking-[0.1em] text-[#d0d0d0] mb-1.5">Option 4 — Email footer</div>
+        <h4 class="text-[0.875rem] font-semibold text-[#111] mb-1.5">Add to your email signature</h4>
+        <p class="text-[0.78rem] text-[#777] leading-[1.55]">Paste the HTML snippet into your signature editor (Gmail → Settings → Signature, Outlook → New Signature). Most clients that support HTML signatures will render the badge inline.</p>
+      </div>
+
+      <div class="bg-white rounded-xl p-5 shadow-sm">
+        <div class="text-[0.62rem] font-bold uppercase tracking-[0.1em] text-[#d0d0d0] mb-1.5">Option 5 — AI-generated content</div>
+        <h4 class="text-[0.875rem] font-semibold text-[#111] mb-1.5">Drop the file into your work</h4>
+        <p class="text-[0.78rem] text-[#777] leading-[1.55]">Download the SVG or PNG and insert it directly into AI-generated output: infographics, blog post headers, slide decks, social posts, documentation. A small badge in the corner or footer tells your audience what they're engaging with, without interrupting the content.</p>
+      </div>
+
+      <div class="bg-white rounded-xl p-5 shadow-sm">
+        <div class="text-[0.62rem] font-bold uppercase tracking-[0.1em] text-[#d0d0d0] mb-1.5">Make up any label</div>
+        <h4 class="text-[0.875rem] font-semibold text-[#111] mb-1.5">No fixed vocabulary</h4>
+        <p class="text-[0.78rem] text-[#777] leading-[1.55]">Use any past participle that accurately describes what happened: <em>AI Outlined</em>, <em>AI Captioned</em>, <em>Transcript: AI Cleaned</em>, <em>Cover: AI Generated</em>. The goal is accuracy, not compliance with a list.</p>
+      </div>
+
+      <div class="bg-[#0d1117] text-white rounded-xl p-6 shadow-sm col-span-full">
+        <div class="text-[0.62rem] font-bold uppercase tracking-[0.1em] text-[#4a5568] mb-2">Why bother disclosing at all?</div>
+        <h4 class="text-[1rem] font-semibold text-white mb-3">Think of it like a nutrition label, not a confession</h4>
+        <p class="text-[0.82rem] text-[#9ca3af] leading-[1.65]">
+          AI disclosure doesn't mean you did something wrong. It means your audience knows what they're engaging with. Just like a nutrition label doesn't judge the food, a badge doesn't judge the work; it just tells people what went into it. Your audience can decide for themselves how much weight to give it.
+          <br><br>
+          Today most people lie about how they use AI or try to pass AI-generated content as their own. Journalist Mike Elgan <a href="https://www.computerworld.com/article/4120839/always-disclose-how-you-use-ai.html" target="_blank" rel="noopener" class="text-[#6b9bd2] hover:text-white transition-colors no-underline hover:underline">argues</a> that disclosure is the answer: when you label your work consistently, you give your audience the context to make sense of what they're engaging with, and you become part of a counter-current to all the content that doesn't. A small badge takes two seconds and says: <em class="text-white">I'm being straight with you about how this was made.</em>
+          <br><br>
+          It is an honor system. There's no validator, no compliance checklist, no badge police. Just a lightweight, voluntary way to say: <em class="text-white">here's how AI was involved</em>.
+          <br><br>
+          Browse the <a href="https://mau-vera.github.io/built-with-ai-badges/badge-gallery.html" class="text-[#6b9bd2] hover:text-white transition-colors no-underline hover:underline">full gallery</a> for more examples.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+</div><!-- /container -->
+
+<footer class="bg-[#0d1117] text-[#666] py-6 px-4 text-[0.78rem] text-center">
+  <p>AI Disclosure Badges · free to use · <a href="./LICENSE" class="text-[#888] no-underline hover:text-[#ccc] transition-colors">CC0 / Public Domain</a> · <a href="https://github.com/mau-vera/built-with-ai-badges" class="text-[#888] no-underline hover:text-[#ccc] transition-colors">View on GitHub</a></p>
+  <p class="mt-2.5 text-[0.72rem] text-[#555] leading-relaxed">
+    Not affiliated with Anthropic, OpenAI, Google, Microsoft, GitHub, or any other AI company.<br>
+    Brand names and logos are used solely to identify tools for disclosure purposes. · <a href="https://github.com/mau-vera/built-with-ai-badges#readme" class="text-[#888] no-underline hover:text-[#ccc] transition-colors">Read the README</a>
+  </p>
+  <p class="mt-3 text-[#555]">Created by <a href="https://mauvera.me" target="_blank" rel="noopener" class="text-[#888] no-underline hover:text-[#ccc] transition-colors">Mau Vera</a></p>
+  <p class="mt-3 flex justify-center">
+    <img src="./badges/code/ai-coded--claude.svg" alt="Code: AI Coded · Claude" height="20" class="opacity-75">
+  </p>
+</footer>
+
+<!-- ─────────────────────────── JS ─────────────────────────── -->
+<script>
+// ─── Tool icon paths (24×24 viewBox, rendered at 0.75 scale = 18px) ──────────
+const TOOL_ICONS = {
+  'Claude': `<path d="M8.64445 2.55279C8.39746 2.05881 7.79679 1.85859 7.30281 2.10558C6.80883 2.35257 6.60861 2.95324 6.8556 3.44722L9.68128 9.09859L5.06655 5.92596C4.61145 5.61308 3.98887 5.72837 3.67598 6.18348C3.3631 6.63858 3.47839 7.26116 3.9335 7.57405L9.40503 11.3357L3.05258 11.0014C2.50106 10.9724 2.03043 11.3959 2.00141 11.9474C1.97238 12.499 2.39594 12.9696 2.94747 12.9986L8.74187 13.3036L4.44532 16.168C3.9858 16.4743 3.86162 17.0952 4.16797 17.5547C4.47433 18.0142 5.0952 18.1384 5.55473 17.8321L9.19687 15.404L6.68629 18.9188C6.36528 19.3682 6.46937 19.9927 6.91879 20.3137C7.3682 20.6347 7.99275 20.5307 8.31376 20.0812L11.3471 15.8345L10.5136 20.8356C10.4228 21.3804 10.7909 21.8956 11.3356 21.9864C11.8804 22.0772 12.3956 21.7092 12.4864 21.1644L13.2883 16.3532L15.6588 20.0408C15.9575 20.5053 16.5762 20.6398 17.0408 20.3412C17.5054 20.0425 17.6399 19.4238 17.3412 18.9592L15.5553 16.1812L18.3217 18.7348C18.7276 19.1094 19.3602 19.0841 19.7348 18.6783C20.1094 18.2725 20.0841 17.6398 19.6783 17.2652L16.6427 14.4631L20.876 14.9923C21.424 15.0608 21.9238 14.6721 21.9923 14.124C22.0608 13.576 21.6721 13.0762 21.1241 13.0077L16.9342 12.484L21.2291 11.4734C21.7667 11.3469 22.0999 10.8086 21.9734 10.271C21.8469 9.73336 21.3086 9.40009 20.771 9.52659L15.1819 10.8417L19.2863 5.61783C19.6276 5.18356 19.5521 4.5549 19.1178 4.21369C18.6836 3.87247 18.0549 3.94791 17.7137 4.38218L13.8574 9.29015L14.738 3.65438C14.8233 3.10872 14.4501 2.59725 13.9044 2.51199C13.3587 2.42673 12.8473 2.79996 12.762 3.34563L11.876 9.01594L8.64445 2.55279Z"/>`,
+
+  'ChatGPT': `<path d="M20.5624 10.1875C20.8124 9.5 20.8749 8.8125 20.8124 8.125C20.7499 7.4375 20.4999 6.75 20.1874 6.125C19.6249 5.1875 18.8124 4.4375 17.8749 4C16.8749 3.5625 15.8124 3.4375 14.7499 3.6875C14.2499 3.1875 13.6874 2.75 13.0624 2.4375C12.4374 2.125 11.6874 2 10.9999 2C9.9374 2 8.8749 2.3125 7.9999 2.9375C7.1249 3.5625 6.4999 4.4375 6.1874 5.4375C5.4374 5.625 4.8124 5.9375 4.1874 6.3125C3.6249 6.75 3.1874 7.3125 2.8124 7.875C2.24991 8.8125 2.06241 9.875 2.18741 10.9375C2.31241 12 2.7499 13 3.4374 13.8125C3.1874 14.5 3.1249 15.1875 3.1874 15.875C3.2499 16.5625 3.4999 17.25 3.8124 17.875C4.3749 18.8125 5.1874 19.5625 6.1249 20C7.1249 20.4375 8.1874 20.5625 9.2499 20.3125C9.7499 20.8125 10.3124 21.25 10.9374 21.5625C11.5624 21.875 12.3124 22 12.9999 22C14.0624 22 15.1249 21.6875 15.9999 21.0625C16.8749 20.4375 17.4999 19.5625 17.8124 18.5625C18.4999 18.4375 19.1874 18.125 19.7499 17.6875C20.3124 17.25 20.8124 16.75 21.1249 16.125C21.6874 15.1875 21.8749 14.125 21.7499 13.0625C21.6249 12 21.2499 11 20.5624 10.1875ZM13.0624 20.6875C12.0624 20.6875 11.3124 20.375 10.6249 19.8125C10.6249 19.8125 10.6874 19.75 10.7499 19.75L14.7499 17.4375C14.8749 17.375 14.9374 17.3125 14.9999 17.1875C15.0624 17.0625 15.0624 17 15.0624 16.875V11.25L16.7499 12.25V16.875C16.8124 19.0625 15.0624 20.6875 13.0624 20.6875ZM4.9999 17.25C4.5624 16.5 4.3749 15.625 4.5624 14.75C4.5624 14.75 4.6249 14.8125 4.6874 14.8125L8.6874 17.125C8.8124 17.1875 8.8749 17.1875 8.9999 17.1875C9.1249 17.1875 9.2499 17.1875 9.3124 17.125L14.1874 14.3125V16.25L10.1249 18.625C9.2499 19.125 8.2499 19.25 7.3124 19C6.3124 18.75 5.4999 18.125 4.9999 17.25ZM3.9374 8.5625C4.3749 7.8125 5.0624 7.25 5.8749 6.9375V7.0625V11.6875C5.8749 11.8125 5.8749 11.9375 5.9374 12C5.9999 12.125 6.0624 12.1875 6.1874 12.25L11.0624 15.0625L9.3749 16.0625L5.3749 13.75C4.4999 13.25 3.8749 12.4375 3.6249 11.5C3.3749 10.5625 3.4374 9.4375 3.9374 8.5625ZM17.7499 11.75L12.8749 8.9375L14.5624 7.9375L18.5624 10.25C19.1874 10.625 19.6874 11.125 19.9999 11.75C20.3124 12.375 20.4999 13.0625 20.4374 13.8125C20.3749 14.5 20.1249 15.1875 19.6874 15.75C19.2499 16.3125 18.6874 16.75 17.9999 17V12.25C17.9999 12.125 17.9999 12 17.9374 11.9375C17.9374 11.9375 17.8749 11.8125 17.7499 11.75ZM19.4374 9.25C19.4374 9.25 19.3749 9.1875 19.3124 9.1875L15.3124 6.875C15.1874 6.8125 15.1249 6.8125 14.9999 6.8125C14.8749 6.8125 14.7499 6.8125 14.6874 6.875L9.8124 9.6875V7.75L13.8749 5.375C14.4999 5 15.1874 4.875 15.9374 4.875C16.6249 4.875 17.3124 5.125 17.9374 5.5625C18.4999 6 18.9999 6.5625 19.2499 7.1875C19.4999 7.8125 19.5624 8.5625 19.4374 9.25ZM8.9374 12.75L7.2499 11.75V7.0625C7.2499 6.375 7.4374 5.625 7.8124 5.0625C8.1874 4.4375 8.7499 4 9.3749 3.6875C9.9999 3.375 10.7499 3.25 11.4374 3.375C12.1249 3.4375 12.8124 3.75 13.3749 4.1875C13.3749 4.1875 13.3124 4.25 13.2499 4.25L9.2499 6.5625C9.1249 6.625 9.0624 6.6875 8.9999 6.8125C8.9374 6.9375 8.9374 7 8.9374 7.125V12.75ZM9.8124 10.75L11.9999 9.5L14.1874 10.75V13.25L11.9999 14.5L9.8124 13.25V10.75Z"/>`,
+
+  'Gemini': `<path d="M11.1244 1.09094H12.8753L12.9269 1.9453C13.2227 6.85075 17.1493 10.7773 22.0546 11.0732L22.909 11.1247V12.8757L22.0546 12.9272C17.1493 13.2231 13.2227 17.1498 12.9269 22.0551L12.8753 22.9095H11.1244L11.0728 22.0551C10.777 17.1498 6.85036 13.2231 1.94518 12.9272L1.09082 12.8757V11.1247L1.94518 11.0732C6.85036 10.7773 10.777 6.85075 11.0728 1.9453L11.1244 1.09094ZM11.9999 5.85023C10.83 8.61547 8.61512 10.8304 5.84996 12.0002C8.61512 13.1701 10.83 15.385 11.9999 18.1502C13.1697 15.385 15.3846 13.1701 18.1498 12.0002C15.3846 10.8304 13.1697 8.61547 11.9999 5.85023Z"/>`,
+
+  'GitHub Copilot': `<path d="M8.66223 14.4841C8.66223 13.9312 9.11034 13.4829 9.6634 13.4829 10.2163 13.4829 10.6646 13.9312 10.6646 14.4841V16.4812C10.6646 17.0341 10.2165 17.4824 9.6634 17.4824 9.11034 17.4824 8.66223 17.0341 8.66223 16.4812V14.4841ZM15.3367 14.4841C15.3367 13.9312 14.8886 13.4829 14.3355 13.4829 13.7822 13.4829 13.3344 13.9314 13.3344 14.4841V16.4812C13.3344 17.0341 13.7825 17.4824 14.3355 17.4824 14.8886 17.4824 15.3367 17.0341 15.3367 16.4812V14.4841ZM11.9995 4.02765C11.1541 2.80927 9.40138 2.71883 8.0541 2.83958 6.51063 2.99438 5.21093 3.52495 4.48026 4.30434 3.2125 5.68959 3.15351 8.59518 3.76523 10.1949 3.70377 10.4683 3.64517 10.7453 3.60293 11.0385 2.4729 11.3362 1.32031 12.9371 1.32031 14.0819V16.2445C1.32031 16.8449 1.60059 17.3921 2.09466 17.7659 4.9186 19.8644 8.43899 21.49 11.9995 21.49 15.5599 21.49 19.0803 19.8644 21.9043 17.7659 22.3983 17.3921 22.6786 16.8449 22.6786 16.2445V14.0819C22.6786 12.9371 21.5261 11.3362 20.396 11.0385 20.3539 10.7453 20.2953 10.4683 20.2338 10.1949 20.8454 8.59518 20.7864 5.68959 19.5187 4.30434 18.788 3.52495 17.4883 2.99438 15.9449 2.83958 14.5976 2.71883 12.8449 2.80927 11.9995 4.02765ZM18.674 17.4874C17.139 18.3415 14.5891 19.4879 11.9995 19.4879 9.40986 19.4879 6.86 18.3415 5.325 17.4874V11.689C7.80186 12.6484 10.6522 12.1537 11.9975 9.93121H12.0014C13.3468 12.1537 16.1971 12.6484 18.674 11.689V17.4874ZM10.6646 6.82895C10.6646 8.41414 10.1848 10.1401 7.99479 10.1401 5.80474 10.1401 5.38758 9.61574 5.38758 8.14315 5.38758 5.80709 5.7441 4.80738 8.70396 4.80738 10.4143 4.80738 10.6646 5.35636 10.6646 6.82895ZM13.3344 6.82895C13.3344 5.35636 13.5847 4.80738 15.2951 4.80738 18.2548 4.80738 18.6114 5.80709 18.6114 8.14315 18.6114 9.61574 18.1942 10.1401 16.0042 10.1401 13.8141 10.1401 13.3344 8.41414 13.3344 6.82895Z"/>`,
+
+  'Apple Intelligence': `<path d="M15.778 8.20793C15.3053 8.1711 14.7974 8.28434 14.0197 8.58067C14.085 8.55577 13.2775 8.87173 13.0511 8.95077C12.5494 9.12593 12.1364 9.22198 11.6734 9.22198C11.2151 9.22198 10.7925 9.13042 10.3078 8.96683C10.1524 8.91441 9.99616 8.8564 9.80283 8.7809C9.71993 8.74852 9.41997 8.62947 9.3544 8.60379C8.70626 8.34996 8.34154 8.25434 8.03885 8.26181C6.88626 8.2765 5.79557 8.9421 5.16246 10.0442C3.87037 12.2875 4.58583 16.3428 6.47459 19.075C7.4802 20.5189 8.03062 21.035 8.25199 21.0279C8.4743 21.0183 8.63777 20.9713 9.03567 20.8026C9.11485 20.7689 9.11485 20.7689 9.202 20.7317C10.2077 20.3032 10.9118 20.114 11.9734 20.114C12.9944 20.114 13.6763 20.2997 14.6416 20.7159C14.7302 20.7542 14.7302 20.7542 14.8097 20.7884C15.2074 20.9588 15.3509 20.9962 15.6016 20.9902C15.9591 20.9846 16.4003 20.5726 17.3791 19.1362C17.6471 18.7447 17.884 18.3333 18.0895 17.9168C17.9573 17.8077 17.826 17.6917 17.6975 17.5693C16.4086 16.3408 15.6114 14.6845 15.5895 12.6391C15.5756 11.0186 16.1057 9.61487 16.999 8.45797C16.6293 8.3142 16.2216 8.23805 15.778 8.20793ZM15.9334 6.21398C16.6414 6.26198 18.6694 6.47798 19.9894 8.40998C19.8814 8.46998 17.5654 9.81397 17.5894 12.622C17.6254 15.982 20.5294 17.098 20.5654 17.11C20.5414 17.194 20.0974 18.706 19.0294 20.266C18.1054 21.622 17.1454 22.966 15.6334 22.99C14.1454 23.026 13.6654 22.114 11.9734 22.114C10.2694 22.114 9.74138 22.966 8.33738 23.026C6.87338 23.074 5.76938 21.562 4.83338 20.218C2.92538 17.458 1.47338 12.442 3.42938 9.04597C4.40138 7.35397 6.12938 6.28598 8.01338 6.26198C9.44138 6.22598 10.7974 7.22198 11.6734 7.22198C12.5374 7.22198 14.0854 6.06998 15.9334 6.21398ZM14.7934 4.38998C14.0134 5.32598 12.7414 6.05798 11.5054 5.96198C11.3374 4.68998 11.9614 3.35798 12.6814 2.52998C13.4854 1.59398 14.8294 0.897976 15.9454 0.849976C16.0894 2.14598 15.5734 3.45398 14.7934 4.38998Z"/>`,
+
+  'Microsoft Copilot': `<path d="M14.8647 3.0625C15.7217 3.06258 16.4834 3.60732 16.7612 4.41797L17.3628 6.17578C17.6318 6.96124 18.356 7.4955 19.1801 7.52832H19.7329C19.7597 7.52832 19.7866 7.53082 19.813 7.53125H19.8862L19.8813 7.5332C23.5529 7.64689 22.2416 12.0268 21.2368 15.3145C20.3774 18.126 19.0883 20.9375 16.9399 20.9375H9.36081C8.50019 20.9375 7.73536 20.3887 7.46041 19.5732L6.87448 17.834C6.60202 17.0255 5.84813 16.4791 4.99655 16.4697H4.26608C0.412106 16.4697 1.74407 12.0161 2.76217 8.68555C3.62153 5.8743 4.91067 3.06258 7.05905 3.0625H14.8647ZM13.2456 7.53125C12.4333 7.53132 11.7104 8.02053 11.3999 8.75586C10.7292 11.0285 10.0089 13.5016 9.57077 15.0195C9.32486 15.8712 8.55007 16.4585 7.66549 16.4688H10.7426C11.6051 16.4688 12.3656 15.9175 12.6401 15.1064C13.299 12.8717 13.9999 10.4671 14.4292 8.97949C14.6706 8.14295 15.4217 7.56162 16.2866 7.53125H13.2456Z"/>`,
+
+  'Midjourney': `<path d="M16.4004 21H14.2461L12.2461 16H5.75391L3.75391 21H1.59961L8 4.99996H10L16.4004 21ZM21 12V21H19V12H21ZM6.55371 14H11.4463L9 7.88473L6.55371 14ZM19.5293 2.3193C19.7058 1.89351 20.2942 1.8935 20.4707 2.3193L20.7236 2.93063C21.1555 3.97343 21.9615 4.80613 22.9746 5.2568L23.6914 5.57613C24.1022 5.75881 24.1022 6.35634 23.6914 6.53902L22.9326 6.87691C21.945 7.31619 21.1534 8.11942 20.7139 9.12789L20.4668 9.69332C20.2863 10.1075 19.7136 10.1075 19.5332 9.69332L19.2861 9.12789C18.8466 8.11941 18.0551 7.31619 17.0674 6.87691L16.3076 6.53902C15.8974 6.35617 15.8974 5.75894 16.3076 5.57613L17.0254 5.2568C18.0384 4.80613 18.8445 3.97343 19.2764 2.93063L19.5293 2.3193Z"/>`,
+
+  'Perplexity': `<path d="M5.73486 2L11.4299 7.24715V7.24595V2.01211H12.5385V7.27063L18.2591 2V7.98253H20.6078V16.6118H18.2663V21.9389L12.5385 16.9066V21.9967H11.4299V16.9896L5.74131 22V16.6118H3.39258V7.98253H5.73486V2ZM10.5942 9.0776H4.50118V15.5167H5.73992V13.4856L10.5942 9.0776ZM6.84986 13.9715V19.5565L11.4299 15.5225V9.81146L6.84986 13.9715ZM12.5704 15.4691L17.1577 19.4994V16.6118H17.1518V13.9663L12.5704 9.80608V15.4691ZM18.2663 15.5167H19.4992V9.0776H13.4516L18.2663 13.4399V15.5167ZM17.1505 7.98253V4.51888L13.3911 7.98253H17.1505ZM10.6028 7.98253L6.84346 4.51888V7.98253H10.6028Z"/>`,
+
+  'DeepSeek':        `<path d="M2.5 12C2.5 7.52 6.52 3.5 12 3.5C14.67 3.5 17.07 4.56 18.82 6.3L16.41 8.71C15.24 7.55 13.7 6.83 12 6.83C8.38 6.83 5.83 9.38 5.83 12C5.83 14.62 8.38 17.17 12 17.17C14.97 17.17 17.08 15.51 17.66 13.17H12V9.83H21.5V12C21.5 17.29 17.26 20.5 12 20.5C6.52 20.5 2.5 16.48 2.5 12Z"/>`,
+
+  'Qwen':            `<path d="M12 2L14.5 9.5H22L15.75 14L18.25 21.5L12 17L5.75 21.5L8.25 14L2 9.5H9.5L12 2Z"/>`,
+
+  'Grammarly':       `<path d="M16.4004 21H14.2461L12.2461 16H5.75391L3.75391 21H1.59961L8 4.99996H10L16.4004 21ZM21 12V21H19V12H21ZM6.55371 14H11.4463L9 7.88473L6.55371 14ZM19.5293 2.3193C19.7058 1.89351 20.2942 1.8935 20.4707 2.3193L20.7236 2.93063C21.1555 3.97343 21.9615 4.80613 22.9746 5.2568L23.6914 5.57613C24.1022 5.75881 24.1022 6.35634 23.6914 6.53902L22.9326 6.87691C21.945 7.31619 21.1534 8.11942 20.7139 9.12789L20.4668 9.69332C20.2863 10.1075 19.7136 10.1075 19.5332 9.69332L19.2861 9.12789C18.8466 8.11941 18.0551 7.31619 17.0674 6.87691L16.3076 6.53902C15.8974 6.35617 15.8974 5.75894 16.3076 5.57613L17.0254 5.2568C18.0384 4.80613 18.8445 3.97343 19.2764 2.93063L19.5293 2.3193Z"/>`,
+
+  'DALL·E':          `<path d="M20.5624 10.1875C20.8124 9.5 20.8749 8.8125 20.8124 8.125C20.7499 7.4375 20.4999 6.75 20.1874 6.125C19.6249 5.1875 18.8124 4.4375 17.8749 4C16.8749 3.5625 15.8124 3.4375 14.7499 3.6875C14.2499 3.1875 13.6874 2.75 13.0624 2.4375C12.4374 2.125 11.6874 2 10.9999 2C9.9374 2 8.8749 2.3125 7.9999 2.9375C7.1249 3.5625 6.4999 4.4375 6.1874 5.4375C5.4374 5.625 4.8124 5.9375 4.1874 6.3125C3.6249 6.75 3.1874 7.3125 2.8124 7.875C2.24991 8.8125 2.06241 9.875 2.18741 10.9375C2.31241 12 2.7499 13 3.4374 13.8125C3.1874 14.5 3.1249 15.1875 3.1874 15.875C3.2499 16.5625 3.4999 17.25 3.8124 17.875C4.3749 18.8125 5.1874 19.5625 6.1249 20C7.1249 20.4375 8.1874 20.5625 9.2499 20.3125C9.7499 20.8125 10.3124 21.25 10.9374 21.5625C11.5624 21.875 12.3124 22 12.9999 22C14.0624 22 15.1249 21.6875 15.9999 21.0625C16.8749 20.4375 17.4999 19.5625 17.8124 18.5625C18.4999 18.4375 19.1874 18.125 19.7499 17.6875C20.3124 17.25 20.8124 16.75 21.1249 16.125C21.6874 15.1875 21.8749 14.125 21.7499 13.0625C21.6249 12 21.2499 11 20.5624 10.1875ZM9.8124 10.75L11.9999 9.5L14.1874 10.75V13.25L11.9999 14.5L9.8124 13.25V10.75Z"/>`,
+
+  'Stable Diffusion': `<path d="M16.4004 21H14.2461L12.2461 16H5.75391L3.75391 21H1.59961L8 4.99996H10L16.4004 21ZM21 12V21H19V12H21ZM6.55371 14H11.4463L9 7.88473L6.55371 14ZM19.5293 2.3193C19.7058 1.89351 20.2942 1.8935 20.4707 2.3193L20.7236 2.93063C21.1555 3.97343 21.9615 4.80613 22.9746 5.2568L23.6914 5.57613C24.1022 5.75881 24.1022 6.35634 23.6914 6.53902L22.9326 6.87691C21.945 7.31619 21.1534 8.11942 20.7139 9.12789L20.4668 9.69332C20.2863 10.1075 19.7136 10.1075 19.5332 9.69332L19.2861 9.12789C18.8466 8.11941 18.0551 7.31619 17.0674 6.87691L16.3076 6.53902C15.8974 6.35617 15.8974 5.75894 16.3076 5.57613L17.0254 5.2568C18.0384 4.80613 18.8445 3.97343 19.2764 2.93063L19.5293 2.3193Z"/>`
+};
+
+// ─── Human icon (person silhouette, same 24×24 viewBox as tool icons) ────────
+const HUMAN_ICON = `<path d="M18.0004 17V22H16.0004V17C16.0004 12.5487 18.6444 8.71498 22.4475 6.98352L23.2753 8.8047C20.1637 10.2213 18.0004 13.3581 18.0004 17ZM8.00045 17V22H6.00045V17C6.00045 13.3581 3.83723 10.2213 0.725586 8.8047L1.55339 6.98352C5.35651 8.71498 8.00045 12.5487 8.00045 17ZM12.0004 12C9.23902 12 7.00045 9.76142 7.00045 7C7.00045 4.23858 9.23902 2 12.0004 2C14.7619 2 17.0004 4.23858 17.0004 7C17.0004 9.76142 14.7619 12 12.0004 12ZM12.0004 10C13.6573 10 15.0004 8.65685 15.0004 7C15.0004 5.34315 13.6573 4 12.0004 4C10.3436 4 9.00045 5.34315 9.00045 7C9.00045 8.65685 10.3436 10 12.0004 10Z"/>`;
+
+// ─── SVG generation ──────────────────────────────────────────────────────────
+const BADGE_H  = 28;
+const LEFT_PAD = 14;
+const RIGHT_PAD = 14;
+const DIV_GAP  = 13;   // gap from split-point to icon left edge
+const ICON_ADV = 24;   // icon occupies 18px + 6px gap = 24px before tool text starts
+const DARK     = '#212529';
+
+let _canvas;
+function measureText(text) {
+  if (!_canvas) _canvas = document.createElement('canvas');
+  const ctx = _canvas.getContext('2d');
+  ctx.font = '500 13px -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif';
+  return ctx.measureText(text).width;
+}
+
+function isLight(hex) {
+  const r = parseInt(hex.slice(1,3),16),
+        g = parseInt(hex.slice(3,5),16),
+        b = parseInt(hex.slice(5,7),16);
+  return (0.299*r + 0.587*g + 0.114*b) / 255 > 0.60;
+}
+
+function xmlEsc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function r1(n) { return Math.round(n * 10) / 10; }
+
+function buildSVG(label, tool, color) {
+  const labelW = measureText(label);
+  const textFill = isLight(color) ? '#333333' : 'white';
+  const uid = 'bp' + Math.random().toString(36).slice(2, 9);
+
+  if (isHumanLabel(label)) {
+    // Single-color pill with person icon (no tool section)
+    const iconTX  = r1(LEFT_PAD + ICON_ADV);
+    const totalW  = r1(LEFT_PAD + ICON_ADV + Math.ceil(labelW) + 2 + RIGHT_PAD);
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${totalW}" height="${BADGE_H}" viewBox="0 0 ${totalW} ${BADGE_H}">
+  <rect width="${totalW}" height="${BADGE_H}" rx="14" fill="${color}"/>
+  <g transform="translate(${LEFT_PAD},5.00) scale(0.7500)" fill="${textFill}">${HUMAN_ICON}</g>
+  <text x="${iconTX}" y="18.5" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" font-weight="500" fill="${textFill}">${xmlEsc(label)}</text>
+</svg>`;
+  }
+
+  // Add a small buffer so text never clips
+  const splitX  = r1(LEFT_PAD + Math.ceil(labelW) + 2 + RIGHT_PAD);
+
+  if (!tool) {
+    // Single-color pill, text only
+    const totalW = splitX;
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${totalW}" height="${BADGE_H}" viewBox="0 0 ${totalW} ${BADGE_H}">
+  <rect width="${totalW}" height="${BADGE_H}" rx="14" fill="${color}"/>
+  <text x="${LEFT_PAD}" y="18.5" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" font-weight="500" fill="${textFill}">${xmlEsc(label)}</text>
+</svg>`;
+  }
+
+  const iconPath = TOOL_ICONS[tool] || TOOL_ICONS['Claude'];
+  const toolW   = measureText(tool);
+  const rightW  = r1(DIV_GAP + ICON_ADV + Math.ceil(toolW) + 2 + RIGHT_PAD);
+  const totalW  = r1(splitX + rightW);
+  const iconX   = r1(splitX + DIV_GAP);
+  const toolTX  = r1(iconX + ICON_ADV);
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${totalW}" height="${BADGE_H}" viewBox="0 0 ${totalW} ${BADGE_H}">
+  <defs><clipPath id="${uid}"><rect width="${totalW}" height="${BADGE_H}" rx="14"/></clipPath></defs>
+  <g clip-path="url(#${uid})">
+    <rect width="${totalW}" height="${BADGE_H}" fill="${color}"/>
+    <rect x="${splitX}" width="${rightW}" height="${BADGE_H}" fill="${DARK}"/>
+  </g>
+  <text x="${LEFT_PAD}" y="18.5" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" font-weight="500" fill="${textFill}">${xmlEsc(label)}</text>
+  <g transform="translate(${iconX},5.00) scale(0.7500)" fill="white">${iconPath}</g>
+  <text x="${toolTX}" y="18.5" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif" font-size="13" font-weight="500" fill="white">${xmlEsc(tool)}</text>
+</svg>`;
+}
+
+// ─── State ───────────────────────────────────────────────────────────────────
+const state = {
+  label:      'AI Assisted',
+  tool:       'Claude',
+  color:      '#2E71A8',
+  bgMode:     'light',
+  snippetTab: 'html',
+};
+
+// ─── Human-label detection ───────────────────────────────────────────────────
+function isHumanLabel(label) {
+  return /\bhuman\b/i.test(label);
+}
+
+// ─── Auto-color heuristic ────────────────────────────────────────────────────
+const COLOR_MAP = [
+  { re: /\bhuman\b|no\s*ai/i,                                    c: '#3A7D5E' },
+  { re: /written|coded|generat|creat|design|compos|built/i,      c: '#7B5EA7' },
+  { re: /assist|edit|translat|proofread|brainstorm|outline|summar|review|improv/i, c: '#2E71A8' },
+  { re: /research|fact.?check|analyz|verif|transcrib|caption/i,  c: '#7A8694' },
+];
+function autoColor(label) {
+  for (const {re, c} of COLOR_MAP) if (re.test(label)) return c;
+  return '#7A8694';
+}
+
+// ─── Render ──────────────────────────────────────────────────────────────────
+let currentSVG = '';
+
+function svgToDataURI(svg) {
+  try {
+    return 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
+  } catch(e) {
+    return 'data:image/svg+xml,' + encodeURIComponent(svg);
+  }
+}
+
+function render() {
+  // Hide tool selector and force no-tool mode for human labels
+  const human = isHumanLabel(state.label || '');
+  const toolField = document.getElementById('tool-field');
+  toolField.style.display = human ? 'none' : '';
+  const effectiveTool = human ? '' : state.tool;
+
+  currentSVG = buildSVG(state.label || 'Badge', effectiveTool, state.color);
+
+  // Preview
+  const pa = document.getElementById('preview-area');
+  pa.innerHTML = currentSVG;
+  pa.className = 'preview-area' + (state.bgMode === 'dark' ? ' dark-bg' : state.bgMode === 'gray' ? '' : '');
+  if (state.bgMode === 'light') pa.style.background = '#f5f5f5';
+  else if (state.bgMode === 'dark') pa.style.background = '#212529';
+  else pa.style.background = '#e4e4e4';
+
+  // Snippet
+  updateSnippet();
+
+  // Sync swatches
+  document.querySelectorAll('.swatch').forEach(s => {
+    s.classList.toggle('active', s.dataset.color === state.color);
+  });
+
+  // Sync hex label
+  document.getElementById('color-hex').textContent = state.color;
+  document.getElementById('custom-color').value = state.color.startsWith('#') && state.color.length === 7
+    ? state.color : '#2E71A8';
+}
+
+function updateSnippet() {
+  const el   = document.getElementById('snippet-code');
+  const note = document.getElementById('markdown-note');
+  const effectiveTool = isHumanLabel(state.label || '') ? '' : state.tool;
+  const altText = effectiveTool ? `${state.label} · ${effectiveTool}` : state.label;
+  const dataURI = svgToDataURI(currentSVG);
+
+  if (state.snippetTab === 'html') {
+    el.textContent = `<img src="${dataURI}"\n  alt="${altText}"\n  title="${altText}"\n  height="28">`;
+    if (note) note.style.display = 'none';
+  } else if (state.snippetTab === 'markdown') {
+    // Use HTML <img> syntax so tools like Obsidian respect height;
+    // pure Markdown data URIs are stripped by GitHub.
+    el.textContent = `<img src="${dataURI}" height="28" alt="${altText}">`;
+    if (note) note.style.display = '';
+  } else if (state.snippetTab === 'text') {
+    const toolEmoji = effectiveTool ? ` | ✨ ${effectiveTool}` : '';
+    el.textContent = `${state.label}${toolEmoji}`;
+    if (note) note.style.display = 'none';
+  } else {
+    el.textContent = currentSVG;
+    if (note) note.style.display = 'none';
+  }
+}
+
+// ─── Events ──────────────────────────────────────────────────────────────────
+
+// Label input
+document.getElementById('label-input').addEventListener('input', e => {
+  state.label = e.target.value || 'Badge';
+  render();
+});
+
+// Tool select
+document.getElementById('tool-select').addEventListener('change', e => {
+  state.tool = e.target.value;
+  render();
+});
+
+// Color swatches
+document.querySelectorAll('.swatch').forEach(s => {
+  s.addEventListener('click', () => {
+    state.color = s.dataset.color;
+    render();
+  });
+});
+
+// Custom color picker
+document.getElementById('custom-color').addEventListener('input', e => {
+  state.color = e.target.value;
+  document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+  render();
+});
+
+// Quick-pick chips
+document.querySelectorAll('.chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const label = chip.dataset.label;
+    const color = chip.dataset.color || autoColor(label);
+    state.label = label;
+    state.color = color;
+    document.getElementById('label-input').value = label;
+    // Update active chip
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    render();
+  });
+});
+
+// Background toggle
+document.querySelectorAll('.bg-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    state.bgMode = btn.dataset.bg;
+    document.querySelectorAll('.bg-btn').forEach(b => b.classList.toggle('active', b.dataset.bg === state.bgMode));
+    render();
+  });
+});
+
+// Snippet tabs
+document.querySelectorAll('.snippet-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    state.snippetTab = tab.dataset.tab;
+    document.querySelectorAll('.snippet-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === state.snippetTab));
+    updateSnippet();
+  });
+});
+
+// Copy button
+document.getElementById('copy-btn').addEventListener('click', () => {
+  const text = document.getElementById('snippet-code').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-btn');
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1800);
+  }).catch(() => {
+    // Fallback for older browsers
+    const ta = document.createElement('textarea');
+    ta.value = document.getElementById('snippet-code').textContent;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  });
+});
+
+// Download SVG
+document.getElementById('dl-svg').addEventListener('click', () => {
+  const blob = new Blob([currentSVG], {type: 'image/svg+xml;charset=utf-8'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const name = (state.label + (state.tool ? '--' + state.tool : ''))
+    .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  a.href = url; a.download = name + '.svg'; a.click();
+  URL.revokeObjectURL(url);
+});
+
+// Download PNG @2x
+document.getElementById('dl-png').addEventListener('click', () => {
+  const SCALE = 2;
+  const wMatch = currentSVG.match(/width="([\d.]+)"/);
+  const w = wMatch ? parseFloat(wMatch[1]) : 200;
+  const h = BADGE_H;
+
+  const blob = new Blob([currentSVG], {type: 'image/svg+xml;charset=utf-8'});
+  const url  = URL.createObjectURL(blob);
+  const img  = new Image();
+
+  img.onload = () => {
+    const canvas = document.createElement('canvas');
+    canvas.width  = w * SCALE;
+    canvas.height = h * SCALE;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(SCALE, SCALE);
+    ctx.drawImage(img, 0, 0, w, h);
+    URL.revokeObjectURL(url);
+
+    canvas.toBlob(pngBlob => {
+      const pngUrl = URL.createObjectURL(pngBlob);
+      const a = document.createElement('a');
+      const name = (state.label + (state.tool ? '--' + state.tool : ''))
+        .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      a.href = pngUrl; a.download = name + '.png'; a.click();
+      URL.revokeObjectURL(pngUrl);
+    }, 'image/png');
+  };
+
+  img.onerror = () => {
+    URL.revokeObjectURL(url);
+    alert('PNG export failed — try downloading the SVG instead.');
+  };
+
+  img.src = url;
+});
+
+// ─── Init ────────────────────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
