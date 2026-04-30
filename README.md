@@ -60,7 +60,8 @@ Make up whatever label fits. The goal is accuracy, not compliance with a list.
 
 The [badge generator at disclosingai.com](https://disclosingai.com) gives you ready-to-paste code for any platform. Pick your label, tool, and color, then copy. The sections below explain how embedding works on each platform.
 
-### Web page
+<details>
+<summary><strong>Web page</strong></summary>
 
 The full pill HTML works in any web page. Inline styles make it self-contained with no external stylesheet required.
 
@@ -110,9 +111,10 @@ Use scope labels when combining badges so it's clear what each one covers.
 </div>
 ```
 
----
+</details>
 
-### GitHub README
+<details>
+<summary><strong>GitHub README</strong></summary>
 
 GitHub's markdown renderer sanitizes inline `style` attributes as a security measure. The pill HTML is valid, but without CSS it renders as unstyled plain text. This is a GitHub limitation, not a problem with the badges themselves.
 
@@ -132,9 +134,10 @@ Use SVG files instead. Browse the [`/badges/`](https://github.com/mau-vera/built
 
 The full inline HTML works on **GitHub Pages** and any `.html` file in your repo.
 
----
+</details>
 
-### Google Doc
+<details>
+<summary><strong>Google Doc</strong></summary>
 
 Google Docs has no HTML renderer. The only way to add a visual badge is to insert one as an image via **Insert > Image**.
 
@@ -145,9 +148,10 @@ Google Docs has no HTML renderer. The only way to add a visual badge is to inser
 
 A height of around 18px works well inline; 22–24px for a standalone footer line.
 
----
+</details>
 
-### Gmail signature
+<details>
+<summary><strong>Gmail signature</strong></summary>
 
 Gmail strips `display:flex` and most modern layout properties from signature HTML. A flexbox pill will render as broken unstyled text.
 
@@ -157,6 +161,8 @@ Use a PNG instead. The `comms/` folder has email-specific badges like `email-ai-
 2. In Gmail, go to **Settings > See all settings > General > Signature**
 3. Click the **Insert image** icon in the signature editor, choose **Upload**, and select the PNG
 4. Click the image and use the resize options to set the size — **Small** works best for consistent rendering across devices
+
+</details>
 
 ---
 
